@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<header>
+    <h1>CRAFTIFY ZONE</h1>
+</header>
+
+<div class="contain1">
+    <div class="contain">
+        <h1>LOGIN</h1>
+
+        <form id="myForm">
+            <label for="name">Name :</label><br>
+            <input type="text" id="name" placeholder="eg. Utkarsh Mishra">
+            <span id="nameError" class="error"></span><br>
+
+            <label for="email">Email :</label><br>
+            <input type="email" id="email" placeholder="eg. utkarsh.25006177@kiet.edu">
+            <span id="emailError" class="error"></span><br>
+
+            <label for="password">Password :</label><br>
+            <input type="password" id="password">
+            <span id="passwordError" class="error"></span><br>
+
+            <button type="button" onclick="validateForm()">Login</button>
+
+            <p style="margin-top: 20px; font-size: 1.1rem;">
+                Don't have an account? 
+                <a href="create_account.html" style="color:brown; font-weight:bold;">Create one</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+function validateForm() {
+    document.getElementById("nameError").textContent = "";
+    document.getElementById("emailError").textContent = "";
+    document.getElementById("passwordError").textContent = "";
+
+    let isValid = true;
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Name validation
+    if (name === "") {
+        document.getElementById("nameError").textContent = "Name is required.";
+        isValid = false;
+    }
+
+    // Email validation
+    if (email === "") {
+        document.getElementById("emailError").textContent = "Email is required.";
+        isValid = false;
+    } else if (!emailPattern.test(email)) {
+        document.getElementById("emailError").textContent = "Invalid email format.";
+        isValid = false;
+    }
+
+    // Password validation
+    if (password === "") {
+        document.getElementById("passwordError").textContent = "Password is required.";
+        isValid = false;
+    }
+
+    if (!isValid) return;
+
+    // Get stored account
+    let savedUser = JSON.parse(localStorage.getItem("account"));
+
+    if (!savedUser) {
+        alert("No account found. Please create an account first.");
+        return;
+    }
+
+    // Match email + password
+    if (email === savedUser.email && password === savedUser.password) {
+        window.location.href = "./index.html";
+    } else {
+        alert("Incorrect email or password");
+    }
+}
+</script>
+
+</body>
+</html>

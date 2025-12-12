@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="contain1">
+    <div class="contain">
+        <h1>Create Account</h1>
+
+        <form id="createForm">
+
+            <label>Name :</label><br>
+            <input type="text" id="cname">
+            <span id="cnameError" class="error"></span><br>
+
+            <label>Email :</label><br>
+            <input type="email" id="cemail">
+            <span id="cemailError" class="error"></span><br>
+
+            <label>Password :</label><br>
+            <input type="password" id="cpassword">
+            <span id="cpasswordError" class="error"></span><br>
+
+            <button type="button" onclick="saveAccount()">Create</button>
+
+            <p style="margin-top: 20px; font-size: 1.1rem;">
+                Already have an account?
+                <a href="login.html" style="color:brown; font-weight:bold;">Login</a>
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<script>
+function saveAccount() {
+    document.getElementById("cnameError").textContent = "";
+    document.getElementById("cemailError").textContent = "";
+    document.getElementById("cpasswordError").textContent = "";
+
+    let name = document.getElementById("cname").value.trim();
+    let email = document.getElementById("cemail").value.trim();
+    let password = document.getElementById("cpassword").value.trim();
+
+    let valid = true;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Name validation
+    if (name === "") { 
+        document.getElementById("cnameError").textContent = "Name is required"; 
+        valid = false; 
+    }
+
+    // Email validation
+    if (email === "") { 
+        document.getElementById("cemailError").textContent = "Email is required"; 
+        valid = false; 
+    } else if (!emailPattern.test(email)) {
+        document.getElementById("cemailError").textContent = "Invalid email format"; 
+        valid = false; 
+    }
+
+    // Password validation
+    if (password === "") { 
+        document.getElementById("cpasswordError").textContent = "Password is required"; 
+        valid = false; 
+    } else if (password.length < 6) { 
+        document.getElementById("cpasswordError").textContent = "Password must be at least 6 characters"; 
+        valid = false; 
+    }
+
+    if (!valid) return;
+
+    // Check if email already exists
+    let existingUser = JSON.parse(localStorage.getItem("account"));
+    if (existingUser && existingUser.email === email) {
+        alert("An account with this email already exists!");
+        return;
+    }
+
+    // Save account
+    const user = { name, email, password };
+    localStorage.setItem("account", JSON.stringify(user));
+
+    alert("Account created successfully!");
+    window.location.href = "login.html";  // redirect to login page
+}
+</script>
+
+</body>
+</html>
